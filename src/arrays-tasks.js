@@ -335,10 +335,13 @@ function calculateBalance(arr) {
  *    createChunks(['a', 'b', 'c', 'd', 'e'], 2) => [['a', 'b'], ['c', 'd'], ['e']]
  *    createChunks([10, 20, 30, 40, 50], 1) => [[10], [20], [30], [40], [50]]
  */
-function createChunks(/* arr, chunkSize */) {
-  throw new Error('Not implemented');
+function createChunks(arr, chunkSize) {
+  return arr.length === 0
+    ? []
+    : [arr.slice(0, chunkSize)].concat(
+        createChunks(arr.slice(chunkSize), chunkSize)
+      );
 }
-
 /**
  * Generates an array of odd numbers of the specified length.
  *
@@ -367,8 +370,10 @@ function generateOdds(len) {
  *   getElementByIndices(['one','two','three'], [2]) => 'three'  (arr[2])
  *   getElementByIndices([[[ 1, 2, 3]]], [ 0, 0, 1 ]) => 2        (arr[0][0][1])
  */
-function getElementByIndices(/* arr, indices */) {
-  throw new Error('Not implemented');
+function getElementByIndices(arr, indices) {
+  if (!indices.length) return arr;
+  const [first, ...rest] = indices;
+  return getElementByIndices(arr[first], rest);
 }
 /**
  * Returns the number of all falsy values in the specified array.
@@ -437,8 +442,8 @@ function getIndicesOfOddNumbers(numbers) {
  *    getHexRGBValues([ 0, 255, 16777215]) => [ '#000000', '#0000FF', '#FFFFFF' ]
  *    getHexRGBValues([]) => []
  */
-function getHexRGBValues(/* arr */) {
-  throw new Error('Not implemented');
+function getHexRGBValues(arr) {
+  return arr.map((el) => `#${el.toString(16).padStart(6, '0').toUpperCase()}`);
 }
 
 /**
@@ -492,9 +497,16 @@ function findCommonElements(arr1, arr2) {
  *    findLongestIncreasingSubsequence([50, 3, 10, 7, 40, 80]) => 3
  */
 function findLongestIncreasingSubsequence(/* nums */) {
-  throw new Error('Not implemented');
+  /*   return nums.reduce((acc, cur, index, array) => {
+    let result = 0;
+    console.log('array[index - 1]', array[index - 1])
+    if(array[index - 1] > array[index]) {
+      console.log('+', acc)
+      return acc - 1
+    }
+    return acc + 1;
+  }, 0) */
 }
-
 /**
  * Propagates every item in sequence its position times
  * Returns an array that consists of: one first item, two second items, three third items etc.
@@ -581,8 +593,15 @@ function sortDigitNamesByNumericOrder(arr) {
  *   swapHeadAndTail([]) => []
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  if (arr.length <= 1) return arr;
+  const isEven = arr.length % 2 === 0;
+  const midIndex = arr.length / 2;
+  const head = arr.slice(0, midIndex);
+  const tail = arr.slice(-midIndex);
+  const heart = !isEven ? arr.slice(midIndex, midIndex + 1) : '';
+
+  return [...tail, ...heart, ...head];
 }
 
 module.exports = {
